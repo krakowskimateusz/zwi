@@ -31,6 +31,14 @@ public class MainFrame extends JFrame {
             statusLabel.setText("Załadowano: " + f.getName());
             nsField.setText(om.getNamespace());
             appendOut("Wczytano ontologię: " + f.getAbsolutePath());
+            // uzupełnij listę klas
+            classCombo.removeAllItems();
+            for (String c : om.getAllClasses()) {
+                classCombo.addItem(c);
+            }
+            try {
+                reasonerLabel.setText("Reasoner: " + om.getReasonerName());
+            } catch (Exception ignore) {}
         } catch (Exception ex) {
             appendOut("Błąd wczytywania: " + ex.getMessage());
             statusLabel.setText("Błąd ładowania");
@@ -141,6 +149,14 @@ public class MainFrame extends JFrame {
             try {
                 reasonerLabel.setText("Reasoner: " + om.getReasonerName());
             } catch (Exception ignore) {}
+            // pokaż wyniki wnioskowania
+            try {
+                List<String> inf = om.getInferredClassAssertions();
+                appendOut("--- Wnioski (instancja -> klasa) ---");
+                for (String s : inf) appendOut(s);
+            } catch (Exception ex) {
+                appendOut("Błąd podczas pobierania wniosków: " + ex.getMessage());
+            }
         });
         JButton showInst = new JButton("Pokaż instancje klasy");
         showInst.addActionListener(e -> {
@@ -164,6 +180,22 @@ public class MainFrame extends JFrame {
         reasonPanel.add(reasonBtn);
         reasonPanel.add(new JLabel("Klasa:")); reasonPanel.add(classCombo); reasonPanel.add(showInst);
         panel.add(reasonPanel);
+
+        // Dodaj listener do classCombo, żeby przy zmianie wyboru pokazywać instancje
+        classCombo.addActionListener(e -> {
+            try {
+                String selected = (String) classCombo.getSelectedItem();
+                if (selected == null || selected.isEmpty()) return;
+                String local = selected;
+                int idx = Math.max(local.lastIndexOf('#'), local.lastIndexOf('/'));
+                if (idx >= 0 && idx < local.length()-1) local = local.substring(idx+1);
+                List<String> instances = om.getInstancesOfClass(local);
+                appendOut("Instancje klasy " + selected + ":");
+                for (String s : instances) appendOut(" - " + s);
+            } catch (Exception ex) {
+                appendOut("Błąd: " + ex.getMessage());
+            }
+        });
 
         outputArea.setEditable(false);
         JScrollPane scroll = new JScrollPane(outputArea);

@@ -130,6 +130,27 @@ public class OntologyManager {
         return result;
     }
 
+    /**
+     * Zwraca wnioski: dla każdej instancji listę klas (w formie "instancja -> klasa").
+     */
+    public List<String> getInferredClassAssertions() {
+        List<String> result = new ArrayList<>();
+        if (ontology == null || reasoner == null) return result;
+        for (OWLNamedIndividual ind : ontology.getIndividualsInSignature()) {
+            try {
+                NodeSet<OWLClass> types = reasoner.getTypes(ind, false);
+                for (org.semanticweb.owlapi.reasoner.Node<OWLClass> n : types) {
+                    for (OWLClass cls : n) {
+                        result.add(ind.getIRI().toString() + " -> " + cls.getIRI().toString());
+                    }
+                }
+            } catch (Exception ex) {
+                // ignoruj pojedyncze błędy dla danej instancji
+            }
+        }
+        return result;
+    }
+
     public Set<String> getAllIndividuals() {
         Set<String> result = new HashSet<>();
         if (ontology == null) return result;
