@@ -67,20 +67,17 @@ public class OntologyManager {
             reasoner.dispose();
         }
         try {
-            // najpierw spróbuj HermiT (jeśli dostępny)
             Class<?> hermitClass = Class.forName("org.semanticweb.HermiT.ReasonerFactory");
             Object factory = hermitClass.getDeclaredConstructor().newInstance();
             org.semanticweb.owlapi.reasoner.OWLReasonerFactory rf = (org.semanticweb.owlapi.reasoner.OWLReasonerFactory) factory;
             reasoner = rf.createReasoner(ontology);
         } catch (ClassNotFoundException cnf) {
             try {
-                // spróbuj ELK, jeśli dostępny (jeśli użytkownik doda zależność)
                 Class<?> elkClass = Class.forName("org.semanticweb.elk.owlapi.ElkReasonerFactory");
                 Object elkFactory = elkClass.getDeclaredConstructor().newInstance();
                 org.semanticweb.owlapi.reasoner.OWLReasonerFactory rf = (org.semanticweb.owlapi.reasoner.OWLReasonerFactory) elkFactory;
                 reasoner = rf.createReasoner(ontology);
             } catch (ClassNotFoundException cnf2) {
-                // fallback na StructuralReasoner wbudowany w OWLAPI
                 org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory srf = new org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory();
                 reasoner = srf.createReasoner(ontology);
             } catch (Exception ex2) {
@@ -89,7 +86,7 @@ public class OntologyManager {
         } catch (Exception ex) {
             throw new RuntimeException("Nie można utworzyć HermiT reasonera: " + ex.getMessage(), ex);
         }
-        // precompute
+        
         reasoner.precomputeInferences();
     }
 

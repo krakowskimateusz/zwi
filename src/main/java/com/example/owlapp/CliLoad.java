@@ -21,14 +21,11 @@ public class CliLoad {
             int show = Math.min(10, classes.size());
             for (int i = 0; i < show; i++) System.out.println(" - " + classes.get(i));
             System.out.println("Individuals in ontology: " + om.getAllIndividuals().size());
-            // try reasoner
             System.out.println("Uruchamiam reasoner (może być structural fallback)...");
             om.runReasoner();
             if (!classes.isEmpty()) {
-                // take first class local name heuristically
                 String first = classes.get(0);
                 System.out.println("Przykładowe instancje klasy pierwszej: " + first);
-                // extract local name after # or last /
                 String local = first;
                 int idx = Math.max(local.lastIndexOf('#'), local.lastIndexOf('/'));
                 if (idx >= 0 && idx < local.length()-1) local = local.substring(idx+1);

@@ -186,7 +186,6 @@ public class MainFrame extends JFrame {
                 statusLabel.setText("Załadowano: " + f.getName());
                 nsField.setText(om.getNamespace());
                 appendOut("Wczytano ontologię: " + f.getAbsolutePath());
-                // wypełnij listę klas
                 classCombo.removeAllItems();
                 for (String c : om.getAllClasses()) {
                     classCombo.addItem(c);

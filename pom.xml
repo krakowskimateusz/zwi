@@ -16,13 +16,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <artifactId>owlapi-distribution</artifactId>
 <version>5.1.19</version>
 </dependency>
-		<!-- Jeśli chcesz użyć zewnętrznego reasonera (np. HermiT, Openllet/Pellet):
-			 - Pobierz odpowiedni JAR (np. HermiT) i zainstaluj go lokalnie do repozytorium Maven:
-				 mvn install:install-file -Dfile=/pełna/ścieżka/hermit.jar \
-				   -DgroupId=org.semanticweb.hermit -DartifactId=hermit -Dversion=1.4.3.517 -Dpackaging=jar
-			 - Po instalacji możesz odkomentować albo dodać dependency w sekcji <dependencies>.
-			 Uwaga: nie wolno używać zagnieżdżonych komentarzy XML w `pom.xml`.
-		-->
 <!-- (opcjonalnie) SLF4J simple for simple logging -->
 <dependency>
 <groupId>org.slf4j</groupId>
