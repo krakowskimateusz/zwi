@@ -56,20 +56,6 @@ mvn install:install-file -Dfile=/pełna/ścieżka/hermit.jar \
 </dependency>
 ```
 
-2) Openllet / Pellet
 
-- Openllet to aktywny fork Pellet — często dostępny w Maven Central (np. `openllet-core`). Jeśli
-	użyjesz Openllet, dodaj odpowiednie dependency do `pom.xml` (wersję sprawdź na Maven Central).
-- Jeśli chcesz użyć oryginalnego Pellet, pobierz JAR i zainstaluj go lokalnie analogicznie do HermiT.
-
-3) Co zmieniłem w kodzie
-
-- `OntologyManager.runReasoner()` próbuje automatycznie wykryć i użyć dostępnego reasonera w tej
-	kolejności: HermiT, Openllet, Pellet, ELK. Jeśli żaden nie jest dostępny, używany jest wbudowany
-	`StructuralReasoner` z OWLAPI (fallback) — dzięki temu aplikacja działa od razu bez dodatkowych
-	zależności, ale można uzyskać silniejsze wnioski po dodaniu HermiT/Openllet/Pellet.
-
-Jeśli chcesz, mogę dodać do `pom.xml` przykładowe, odkomentowane dependency dla Openllet, lub przeprowadzić
-Cię krok po kroku przez instalację HermiT/Pellet (pobranie JAR i instalacja lokalna). 
 # zwi
 Ontology of machine learning model selection
