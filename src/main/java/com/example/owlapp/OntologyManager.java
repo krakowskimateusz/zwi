@@ -90,6 +90,21 @@ public class OntologyManager {
         reasoner.precomputeInferences();
     }
 
+    /**
+     * Ensure that a reasoner is available. If none, try to create one.
+     * @return true if reasoner is available after the call
+     */
+    public boolean ensureReasoner() {
+        if (ontology == null) return false;
+        if (reasoner != null) return true;
+        try {
+            runReasoner();
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
     public String getReasonerName() {
         if (reasoner == null) return "(none)";
         try {

@@ -170,6 +170,12 @@ public class MainFrame extends JFrame {
                 String local = selected;
                 int idx = Math.max(local.lastIndexOf('#'), local.lastIndexOf('/'));
                 if (idx >= 0 && idx < local.length()-1) local = local.substring(idx+1);
+                if (!om.ensureReasoner()) {
+                    appendOut("Reasoner nie jest uruchomiony i nie można uzyskać instancji.");
+                    try { reasonerLabel.setText("Reasoner: (none)"); } catch (Exception ignore) {}
+                    return;
+                }
+                try { reasonerLabel.setText("Reasoner: " + om.getReasonerName()); } catch (Exception ignore) {}
                 List<String> instances = om.getInstancesOfClass(local);
                 appendOut("Instancje klasy " + selected + ":");
                 for (String s : instances) appendOut(" - " + s);
@@ -189,6 +195,12 @@ public class MainFrame extends JFrame {
                 String local = selected;
                 int idx = Math.max(local.lastIndexOf('#'), local.lastIndexOf('/'));
                 if (idx >= 0 && idx < local.length()-1) local = local.substring(idx+1);
+                if (!om.ensureReasoner()) {
+                    appendOut("Reasoner nie jest uruchomiony — kliknij 'Uruchom reasoner' aby uzyskać instancje.");
+                    try { reasonerLabel.setText("Reasoner: (none)"); } catch (Exception ignore) {}
+                    return;
+                }
+                try { reasonerLabel.setText("Reasoner: " + om.getReasonerName()); } catch (Exception ignore) {}
                 List<String> instances = om.getInstancesOfClass(local);
                 appendOut("Instancje klasy " + selected + ":");
                 for (String s : instances) appendOut(" - " + s);
