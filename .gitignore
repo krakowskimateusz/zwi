@@ -1,0 +1,16 @@
+# Maven
+/target/
+
+# IDE
+.idea/
+*.iml
+
+# logs
+.log
+
+# local libs
+/lib/
+
+# OS
+.DS_Store
+Thumbs.db
