@@ -166,6 +166,38 @@ public class OntologyManager {
         return result;
     }
 
+    /**
+     * Zwraca listę bezpośrednich podklas danej klasy (najpierw próbujemy reasoner, potem axiomy).
+     */
+    public List<String> getSubClassesOf(String classLocal) {
+        List<String> result = new ArrayList<>();
+        if (ontology == null) return result;
+        OWLClass cls = dataFactory.getOWLClass(IRI.create(namespace + classLocal));
+        // jeśli mamy reasonera, użyj jego wyników (direct subclasses)
+        if (reasoner != null) {
+            try {
+                NodeSet<OWLClass> subs = reasoner.getSubClasses(cls, true);
+                for (org.semanticweb.owlapi.reasoner.Node<OWLClass> n : subs) {
+                    for (OWLClass c : n) {
+                        result.add(c.getIRI().toString());
+                    }
+                }
+                return result;
+            } catch (Exception ignore) {
+                // fallback do przeszukania axioms
+            }
+        }
+        // fallback: przeszukaj axiomy SubClassOf
+        for (OWLSubClassOfAxiom ax : ontology.getSubClassAxiomsForSuperClass(cls)) {
+            org.semanticweb.owlapi.model.OWLClassExpression sub = ax.getSubClass();
+            if (!sub.isAnonymous()) {
+                OWLClass sc = sub.asOWLClass();
+                result.add(sc.getIRI().toString());
+            }
+        }
+        return result;
+    }
+
     public Set<String> getAllIndividuals() {
         Set<String> result = new HashSet<>();
         if (ontology == null) return result;

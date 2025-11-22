@@ -195,15 +195,29 @@ public class MainFrame extends JFrame {
                 String local = selected;
                 int idx = Math.max(local.lastIndexOf('#'), local.lastIndexOf('/'));
                 if (idx >= 0 && idx < local.length()-1) local = local.substring(idx+1);
+
+                // najpierw pokaż podklasy (jeśli są)
+                List<String> subs = om.getSubClassesOf(local);
+                if (subs != null && !subs.isEmpty()) {
+                    appendOut("Podklasy " + selected + ":");
+                    for (String s : subs) appendOut(" - " + s);
+                }
+
+                // zapewnij reasonera jeśli chcemy instancje (inferred)
                 if (!om.ensureReasoner()) {
                     appendOut("Reasoner nie jest uruchomiony — kliknij 'Uruchom reasoner' aby uzyskać instancje.");
                     try { reasonerLabel.setText("Reasoner: (none)"); } catch (Exception ignore) {}
                     return;
                 }
                 try { reasonerLabel.setText("Reasoner: " + om.getReasonerName()); } catch (Exception ignore) {}
+
                 List<String> instances = om.getInstancesOfClass(local);
-                appendOut("Instancje klasy " + selected + ":");
-                for (String s : instances) appendOut(" - " + s);
+                if (instances == null || instances.isEmpty()) {
+                    appendOut("Brak instancji dla klasy " + selected + ".");
+                } else {
+                    appendOut("Instancje klasy " + selected + ":");
+                    for (String s : instances) appendOut(" - " + s);
+                }
             } catch (Exception ex) {
                 appendOut("Błąd: " + ex.getMessage());
             }
