@@ -59,3 +59,21 @@ mvn install:install-file -Dfile=/pełna/ścieżka/hermit.jar \
 
 # zwi
 Ontology of machine learning model selection
+
+## Warsaw housing analysis MVP (nowy moduł)
+
+Repozytorium zawiera również fundament MVP dla analizy rynku mieszkaniowego Warszawy w pakiecie:
+
+`com.example.zwi`
+
+Zakres MVP:
+- transakcje RCN (import + normalizacja),
+- model danych z rozdzieleniem `property` i `listing`,
+- historia cen ofert (`listing_price_history`),
+- filtrowanie transakcji,
+- statystyki cen/m² (min/mediana/średnia/max/liczba),
+- porównanie oferty z porównywalnymi transakcjami,
+- markery mapy dla transakcji i ofert,
+- rejestr polityk prawnych źródeł danych.
+
+To jest warstwa domenowo-serwisowa gotowa do podpięcia pod API/GUI.
