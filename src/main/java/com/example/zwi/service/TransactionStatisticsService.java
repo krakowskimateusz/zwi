@@ -16,8 +16,8 @@ public class TransactionStatisticsService {
         }
 
         List<BigDecimal> values = transactions.stream().map(Transaction::pricePerSqm).sorted().toList();
-        BigDecimal min = values.getFirst();
-        BigDecimal max = values.getLast();
+        BigDecimal min = values.get(0);
+        BigDecimal max = values.get(values.size() - 1);
         BigDecimal average = values.stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .divide(BigDecimal.valueOf(values.size()), 2, RoundingMode.HALF_UP);
@@ -39,8 +39,8 @@ public class TransactionStatisticsService {
         }
         List<BigDecimal> values = new ArrayList<>(prices);
         values.sort(Comparator.naturalOrder());
-        BigDecimal min = values.getFirst();
-        BigDecimal max = values.getLast();
+        BigDecimal min = values.get(0);
+        BigDecimal max = values.get(values.size() - 1);
         BigDecimal average = values.stream().reduce(BigDecimal.ZERO, BigDecimal::add)
                 .divide(BigDecimal.valueOf(values.size()), 2, RoundingMode.HALF_UP);
         BigDecimal median = values.size() % 2 == 0
